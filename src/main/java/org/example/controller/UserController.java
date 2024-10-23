@@ -1,27 +1,31 @@
 package org.example.controller;
 
-
 import org.example.entity.User;
-import org.example.service.RoleServiceImpl;
 import org.example.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
+import java.security.Principal;
 
 @Controller
+@RequestMapping("user")
 public class UserController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private RoleServiceImpl roleServiceImpl;
+    private final UserService userService;
 
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
-    @GetMapping(value = "/user")
-    public String userInfo(@AuthenticationPrincipal User user, Model model) {
+    @GetMapping("")
+    public String showUsers(Model model, Principal principal) {
+        User user = userService.getUserByName(principal.getName());
         model.addAttribute("user", user);
-        model.addAttribute("roles", user.getRoles());
-        return "userpage";
+        model.addAttribute("page", "PAGE_USER");
+        return "user";
     }
 }
