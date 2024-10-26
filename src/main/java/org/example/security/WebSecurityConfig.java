@@ -13,16 +13,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final SuccessUserHandler successUserHandler;
-    private final UserDTLSService userDTLSService;
+    private final UserDTLSService userService;
 
     @Autowired
-    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDTLSService userDTLSService) {
+    public WebSecurityConfig(SuccessUserHandler successUserHandler, UserDTLSService userService) {
         this.successUserHandler = successUserHandler;
-        this.userDTLSService = userDTLSService;
+        this.userService = userService;
     }
 
 
@@ -31,7 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+                .antMatchers("/api/user/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
@@ -56,9 +59,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoauthenticationProvider = new DaoAuthenticationProvider();
         daoauthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoauthenticationProvider.setUserDetailsService(userDTLSService);
+        daoauthenticationProvider.setUserDetailsService(userService);
 
         return daoauthenticationProvider;
     }
-}
 
+}
