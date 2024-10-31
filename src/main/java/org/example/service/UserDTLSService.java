@@ -12,16 +12,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserDTLSService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserDTLSService(@Lazy UserService userService) {
-        this.userService = userService;
+    public UserDTLSService(@Lazy UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = userService.getUserByName(s);
+        User user = userServiceImpl.getUserByName(s);
         if (user == null) {
             throw new UsernameNotFoundException("User not found " + s);
         }

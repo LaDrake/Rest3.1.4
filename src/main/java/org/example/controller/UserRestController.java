@@ -2,7 +2,7 @@ package org.example.controller;
 
 
 import org.example.entity.User;
-import org.example.service.UserService;
+import org.example.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,16 +15,16 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/api/user")
 public class UserRestController {
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserRestController(UserService userService) {
-        this.userService = userService;
+    public UserRestController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
     @GetMapping
     public ResponseEntity<User> userInfo(Principal principal) {
-        User user = userService.getUserByName(principal.getName());
+        User user = userServiceImpl.getUserByName(principal.getName());
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

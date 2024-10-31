@@ -12,12 +12,12 @@ import java.util.Set;
 @Component
 public class DBInit {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     private final RoleServiceImpl roleServiceImpl;
 
     @Autowired
-    public DBInit(UserService userService, RoleServiceImpl roleServiceImpl) {
-        this.userService = userService;
+    public DBInit(UserServiceImpl userServiceImpl, RoleServiceImpl roleServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
         this.roleServiceImpl = roleServiceImpl;
 
     }
@@ -31,11 +31,11 @@ public class DBInit {
         Set<Role> roles_admin = new HashSet<>();
         roles_admin.add(roleServiceImpl.getRoleByName("ROLE_ADMIN"));
         User admin = new User("admin", "admin", "admin@admin.ru", "1234", roles_admin);
-        userService.addUser(admin);
+        userServiceImpl.addUser(admin);
         Set<Role> roles_user = new HashSet<>();
         roles_user.add(roleServiceImpl.getRoleByName("ROLE_USER"));
         User user = new User("user", "user",
                 "user@user.ru", "1234", roles_user);
-        userService.addUser(user);
+        userServiceImpl.addUser(user);
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@Transactional
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
 
@@ -19,17 +18,9 @@ public class RoleServiceImpl implements RoleService {
         this.roleRepository = roleRepository;
     }
 
-
+    @Transactional
     public void addRole(Role role) {
         roleRepository.save(role);
-    }
-
-    public void updateRole(Role role) {
-        roleRepository.saveAndFlush(role);
-    }
-
-    public void removeRoleById(long id) {
-        roleRepository.deleteById(id);
     }
 
     public List<Role> getAllRoles() {
