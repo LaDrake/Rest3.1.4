@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: 'mysql:8.0'
+    container_name: 'mysql-bd'
+    environment:
+      MYSQL_DATABASE: katabd
+      MYSQL_USER: best
+      MYSQL_PASSWORD: best
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+
+  spring-app:
+    build: C:\Users\Twenty\IdeaProjects\Rest3.1.4
+    container_name: spring-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/katabd
+      SPRING_DATASOURCE_USERNAME: best
+      SPRING_DATASOURCE_PASSWORD: best
+    ports:
+      - "8080:8080"
